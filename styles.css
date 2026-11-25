@@ -108,12 +108,15 @@ h1 { margin: 0; }
    iOS lays this screen out proportionally to the screen width (a 402pt phone is exactly 402/440 of
    the 440pt layout), so every value here is in 440-wide stage units: N * var(--u). */
 #view-stopwatch { --u: calc(100vw / 440); }
-.sw-pager { position: absolute; left: 0; right: 0; top: 0; height: calc(400 * var(--u)); display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.sw-pager { position: absolute; left: 0; right: 0; top: 0; height: calc(400 * var(--u)); display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none;
+  touch-action: pan-x; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+#view-stopwatch { touch-action: none; overscroll-behavior: none; }
+.laps { touch-action: pan-y; overscroll-behavior: contain; }
 .sw-pager::-webkit-scrollbar { display: none; }
-.sw-page { flex: 0 0 100%; scroll-snap-align: start; position: relative; }
+.sw-page { flex: 0 0 100%; height: 100%; scroll-snap-align: start; scroll-snap-stop: always; position: relative; overflow: hidden; }
 .sw-digital { left: 0; right: 0; text-align: center; font-size: calc(87.5 * var(--u)); top: calc(261.7 * var(--u) - var(--bl)); font-weight: 200; font-variant-numeric: tabular-nums; }
 .sw-digital.hours { font-size: calc(70 * var(--u)); top: calc(254 * var(--u) - var(--bl)); }
-.sw-analog { position: absolute; left: 0; top: 0; width: 100%; height: calc(480 * var(--u)); overflow: visible; }
+.sw-analog { position: absolute; left: 0; top: 0; width: 100%; height: calc(400 * var(--u)); }
 .sw-analog text { font-family: var(--font); }
 .round { position: absolute; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .round:active { filter: brightness(1.35); }

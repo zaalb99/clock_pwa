@@ -602,7 +602,7 @@ function svg(tag, attrs, parent = analog) { const e = document.createElementNS(s
 // Geometry measured from a device screenshot: dial centre (220, 229.85), outer radius 152.1.
 const AF = { cx: 220, cy: 229.85, R: 152.1, sub: { cx: 220, cy: 175.7 }, gray: '#474749', orange: '#f1994a' };
 (function buildAnalog() {
-  analog.setAttribute('viewBox', '0 0 440 480');
+  analog.setAttribute('viewBox', '0 0 440 400');
   const { cx, cy, R } = AF, rad = d => d * Math.PI / 180;
   const ray = (c, deg, r1, r2, stroke, w, parent = analog) => svg('line', {
     x1: (c.cx + Math.sin(rad(deg)) * r1).toFixed(2), y1: (c.cy - Math.cos(rad(deg)) * r1).toFixed(2),

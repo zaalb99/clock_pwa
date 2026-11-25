@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Clock">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="styles.css">
+<title>Clock</title>
+</head>
+<body>
+<div id="app">
+
+  <!-- WORLD CLOCK -->
+  <section class="view" id="view-world" data-tab="world">
+    <div class="scroll">
+      <div class="title-block"><h1 class="large-title t">World Clock</h1></div>
+      <ul class="list wc-list" id="world-list"></ul>
+      <div class="empty" id="world-empty">No World Clocks</div>
+    </div>
+    <div class="navbar">
+      <button class="pill" id="world-edit">Edit</button>
+      <button class="pill circle" id="world-add" aria-label="Add"><svg viewBox="0 0 18 18"><path d="M9 1v16M1 9h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+    </div>
+  </section>
+
+  <!-- ALARMS -->
+  <section class="view" id="view-alarm" data-tab="alarm">
+    <div class="scroll">
+      <div class="title-block"><h1 class="large-title t">Alarms</h1></div>
+      <div class="sleep-block">
+        <div class="sleep-head t"><svg class="bed" viewBox="0 0 20 13"><path fill="currentColor" d="M3 0h14a2 2 0 0 1 2 2v3.6a2.6 2.6 0 0 0-1.4-.6H16V3.6a1 1 0 0 0-1-1h-3a1 1 0 0 0-1 1V5H9V3.6a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1V5H2.4a2.6 2.6 0 0 0-1.4.6V2a2 2 0 0 1 2-2ZM2.5 6.3h15A2.5 2.5 0 0 1 20 8.8V12a1 1 0 0 1-2 0v-.9H2v.9a1 1 0 0 1-2 0V8.8a2.5 2.5 0 0 1 2.5-2.5Z"/></svg>Sleep | Wake Up</div>
+        <div class="sleep-row" id="sleep-row">
+          <div class="sleep-text t" id="sleep-text">No Alarm</div>
+          <button class="change-pill" id="sleep-change">CHANGE</button>
+        </div>
+      </div>
+      <div class="other-head"><span class="t" id="other-label">Other</span></div>
+      <ul class="list al-list" id="alarm-list"></ul>
+    </div>
+    <div class="navbar">
+      <button class="pill" id="alarm-edit">Edit</button>
+      <button class="pill circle" id="alarm-add" aria-label="Add"><svg viewBox="0 0 18 18"><path d="M9 1v16M1 9h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+    </div>
+  </section>
+
+  <!-- STOPWATCH -->
+  <section class="view" id="view-stopwatch" data-tab="stopwatch">
+    <div class="sw-pager" id="sw-pager">
+      <div class="sw-page"><div class="sw-digital t" id="sw-digital">00:00.00</div></div>
+      <div class="sw-page"><svg class="sw-analog" id="sw-analog" viewBox="0 0 320 320"></svg></div>
+    </div>
+    <button class="round sw-left gray" id="sw-left" disabled><span>Lap</span></button>
+    <div class="dots"><span class="dot on" id="dot0"></span><span class="dot" id="dot1"></span></div>
+    <button class="round sw-right green" id="sw-right"><span>Start</span></button>
+    <div class="sw-sep"></div>
+    <ul class="laps" id="sw-laps"></ul>
+  </section>
+
+  <!-- TIMERS -->
+  <section class="view" id="view-timer" data-tab="timer">
+    <div class="scroll">
+      <div class="timer-canvas">
+        <h1 class="large-title t">Timers</h1>
+        <div class="picker timer-picker" id="timer-picker"></div>
+        <div class="timer-run hidden" id="timer-run">
+          <svg class="ring" viewBox="0 0 200 200"><circle cx="100" cy="100" r="96" class="ring-bg"/><circle cx="100" cy="100" r="96" class="ring-fg" id="ring-fg"/></svg>
+          <div class="timer-center">
+            <div class="timer-remaining" id="timer-remaining">0:00</div>
+            <div class="timer-end"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 22a2.4 2.4 0 0 0 2.4-2.4H9.6A2.4 2.4 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-2 2v1h18v-1Z"/></svg><span id="timer-endtime"></span></div>
+          </div>
+        </div>
+        <button class="round tbtn t-cancel" id="timer-cancel" disabled aria-label="Cancel"><svg viewBox="0 0 22 22"><path d="M1.5 1.5l19 19M20.5 1.5l-19 19" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg></button>
+        <button class="round tbtn t-start green" id="timer-start" aria-label="Start">
+          <svg class="i-play" viewBox="0 0 20 23"><path fill="currentColor" d="M2.6 1.2 18.6 10a1.7 1.7 0 0 1 0 3L2.6 21.8A1.7 1.7 0 0 1 0 20.3V2.7a1.7 1.7 0 0 1 2.6-1.5Z"/></svg>
+          <svg class="i-pause" viewBox="0 0 20 23"><rect x="1" y="0" width="6" height="23" rx="1.6" fill="currentColor"/><rect x="13" y="0" width="6" height="23" rx="1.6" fill="currentColor"/></svg>
+        </button>
+        <ul class="card">
+          <li class="crow"><span class="t c-l">Label</span><input id="timer-label" class="c-in" placeholder="Timer" maxlength="40"></li>
+          <li class="crow tappable" id="timer-sound-row"><span class="t c-l">Sound</span><span class="t c-v" id="timer-sound-name">Radial</span><i class="chev"></i></li>
+        </ul>
+      </div>
+      <div class="recents-block" id="recents-block">
+        <div class="recents-head"><span class="t">Recents</span></div>
+        <ul class="list rc-list" id="timer-recents"></ul>
+      </div>
+    </div>
+    <div class="navbar">
+      <button class="pill" id="timer-edit">Edit</button>
+    </div>
+  </section>
+
+  <!-- TAB BAR -->
+  <nav class="tabbar">
+    <button data-tab="world">
+      <svg viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="10.6"/><ellipse cx="12" cy="12" rx="4.6" ry="10.6"/><path d="M12 1.4v21.2M1.4 12h21.2M3 6.6h18M3 17.4h18"/></g></svg>
+      <span>World Clock</span>
+    </button>
+    <button data-tab="alarm">
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M5.2 1.2a3.4 3.4 0 0 1 1.9 1.2A10.5 10.5 0 0 0 1.4 7.9 3.4 3.4 0 0 1 5.2 1.2Zm13.6 0a3.4 3.4 0 0 1 3.8 6.7 10.5 10.5 0 0 0-5.7-5.5 3.4 3.4 0 0 1 1.9-1.2Z"/><circle cx="12" cy="13" r="9.4" fill="currentColor"/><path d="M12 7.6V13H8.4" fill="none" stroke="#1c1c1c" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.6 20.4 4 22.4M18.4 20.4l1.6 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>Alarms</span>
+    </button>
+    <button data-tab="stopwatch">
+      <svg viewBox="0 0 24 26"><path d="M9.6 1.3h4.8M12 1.3v3.4M20 6.4l1.6-1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="15" r="10.2" fill="currentColor"/><path d="M12 9v6" stroke="#1c1c1c" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="15" r="1.7" fill="#1c1c1c"/></svg>
+      <span>Stopwatch</span>
+    </button>
+    <button data-tab="timer">
+      <svg viewBox="0 0 24 24"><path d="M12 1.6A10.4 10.4 0 1 1 4.6 4.7" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M12 1.6v3.6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="m7.6 7.6 5 5.6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+      <span>Timers</span>
+    </button>
+  </nav>
+</div>
+
+<div id="sheet-root"></div>
+<script src="app.js"></script>
+</body>
+</html>

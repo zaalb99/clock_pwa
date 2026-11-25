@@ -1,5 +1,5 @@
 // Offline-first service worker for the Clock PWA.
-const CACHE = 'clock-v4';
+const CACHE = 'clock-v5';
 const ASSETS = ['./', 'index.html', 'styles.css', 'app.js', 'manifest.webmanifest', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png'];
 
 self.addEventListener('install', e => {

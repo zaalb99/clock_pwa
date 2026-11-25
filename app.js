@@ -798,17 +798,20 @@ $('#timer-edit').addEventListener('click', () => { recentsEditing = !recentsEdit
 // ======================================================================
 // main loop & boot
 // ======================================================================
-// Size the app to the physical screen when installed (works around the iOS 26 standalone
-// viewport being shorter than the screen by the status-bar height).
+// Installed on iOS with an opaque status bar, the page starts below the status bar.
+// --cut = that height, so the layout (written in screen coordinates) shifts up to match.
 function fitApp() {
-  const standalone = navigator.standalone || matchMedia('(display-mode: standalone)').matches;
-  let h = innerHeight;
-  if (standalone && screen && screen.height) {
+  const root = document.documentElement.style;
+  const standalone = navigator.standalone === true;
+  let cut = 0;
+  if (standalone) {
     const portrait = matchMedia('(orientation: portrait)').matches;
     const sh = portrait ? Math.max(screen.width, screen.height) : Math.min(screen.width, screen.height);
-    if (sh > h) h = sh;
+    const d = Math.round(sh - innerHeight);
+    cut = d >= 20 && d <= 70 ? d : d > 70 && d / 2 <= 70 ? Math.round(d / 2) : 0;
   }
-  document.documentElement.style.setProperty('--app-h', h + 'px');
+  root.setProperty('--cut', cut + 'px');
+  if (cut) root.setProperty('--st', '0px'); else root.removeProperty('--st');
 }
 fitApp();
 addEventListener('resize', fitApp); addEventListener('orientationchange', () => setTimeout(fitApp, 300));

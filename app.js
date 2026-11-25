@@ -798,6 +798,22 @@ $('#timer-edit').addEventListener('click', () => { recentsEditing = !recentsEdit
 // ======================================================================
 // main loop & boot
 // ======================================================================
+// Size the app to the physical screen when installed (works around the iOS 26 standalone
+// viewport being shorter than the screen by the status-bar height).
+function fitApp() {
+  const standalone = navigator.standalone || matchMedia('(display-mode: standalone)').matches;
+  let h = innerHeight;
+  if (standalone && screen && screen.height) {
+    const portrait = matchMedia('(orientation: portrait)').matches;
+    const sh = portrait ? Math.max(screen.width, screen.height) : Math.min(screen.width, screen.height);
+    if (sh > h) h = sh;
+  }
+  document.documentElement.style.setProperty('--app-h', h + 'px');
+}
+fitApp();
+addEventListener('resize', fitApp); addEventListener('orientationchange', () => setTimeout(fitApp, 300));
+// ======================================================================
+// ======================================================================
 renderWorld(); renderAlarms(); swButtons(); swRenderLaps(); renderRecents();
 showTab(store.get('tab', 'stopwatch'));
 requestAnimationFrame(() => { [hW, mW, sW].forEach(w => w.mount()); tLayout(); });

@@ -27,7 +27,9 @@ h1 { margin: 0; }
 .hidden { display: none !important; }
 .t { position: absolute; line-height: 1; white-space: nowrap; margin: 0; }
 
-#app { position: fixed; inset: 0; }
+/* --app-h is set from JS: iOS 26 home-screen apps report a window 62pt shorter than the screen
+   while drawing from the very top, which would float everything bottom-anchored 62pt too high. */
+#app { position: fixed; left: 0; right: 0; top: 0; height: var(--app-h, 100%); }
 .view { position: absolute; inset: 0; display: none; }
 .view.active { display: block; }
 .scroll { position: absolute; inset: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: calc(var(--sb) + 80px); }
@@ -108,7 +110,7 @@ h1 { margin: 0; }
 .sw-pager { position: absolute; left: 0; right: 0; top: 0; height: calc(400 * var(--u)); display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
 .sw-pager::-webkit-scrollbar { display: none; }
 .sw-page { flex: 0 0 100%; scroll-snap-align: start; position: relative; }
-.sw-digital { left: 0; right: 0; text-align: center; font-size: calc(90 * var(--u)); top: calc(261.7 * var(--u) - var(--bl)); font-weight: 200; font-variant-numeric: tabular-nums; }
+.sw-digital { left: 0; right: 0; text-align: center; font-size: calc(87.5 * var(--u)); top: calc(261.7 * var(--u) - var(--bl)); font-weight: 200; font-variant-numeric: tabular-nums; }
 .sw-digital.hours { font-size: calc(70 * var(--u)); top: calc(254 * var(--u) - var(--bl)); }
 .sw-analog { position: absolute; left: 0; top: 0; width: 100%; height: calc(480 * var(--u)); overflow: visible; }
 .sw-analog text { font-family: var(--font); }
@@ -249,3 +251,7 @@ h1 { margin: 0; }
 .speed-presets button { flex: 1 0 60px; height: 40px; background: #2c2c2e; border-radius: 20px; }
 .speed-presets button.on { background: var(--orange); color: #000; font-weight: 600; }
 .note { color: var(--gray); font-size: 13px; margin: 10px 20px; line-height: 1.4; }
+
+/* keep overlays on the real screen height too (see #app) */
+.backdrop, .alert { bottom: auto; height: var(--app-h, 100%); }
+.sheet { bottom: auto; height: calc(var(--app-h, 100vh) - var(--st) - 10px); }
